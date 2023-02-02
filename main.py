@@ -11,6 +11,8 @@ class Outcome(Enum):
     PRICE_EXCEEDS_MAX = 1
     GOOD_PRICE = 2
 
+BASEDIR = os.environ["BASEDIR"]
+
 def price_to_int(display_price):
     """
     Take display price of cruise and convert to int
@@ -19,8 +21,8 @@ def price_to_int(display_price):
     return int(price)
 
 def check_available_cruises(max_price):
-    start_date = "2023-02-01"
-    end_date = "2023-02-20"
+    start_date = "2023-02-11"
+    end_date = "2023-02-13"
 
     driver = webdriver.Chrome()
     url = f"https://www.royalcaribbean.com/cruises?search=ship:WN|startDate:{start_date}~{end_date}"
@@ -73,7 +75,7 @@ def first_element_meeting_condition(l, test):
             return i
 
 def update_environment_variables_file(key, value):
-    with open(".env") as f:
+    with open(f"{BASEDIR}/.env") as f:
         lines = f.readlines()
 
     index_to_delete = first_element_meeting_condition(lines, lambda line: line.startswith(key))
@@ -82,7 +84,7 @@ def update_environment_variables_file(key, value):
     new_line = f"{key}={value}\n"
     lines.append(new_line)
 
-    with open(".env", "w") as f:
+    with open(f"{BASEDIR}/.env", "w") as f:
         for line in lines:
             f.write(line)
 
