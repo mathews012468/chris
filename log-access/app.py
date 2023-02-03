@@ -8,4 +8,10 @@ def hello():
 
 @app.route("/logs")
 def get_logs():
-    return "WIP"
+    try:
+        with open("/app/logs/log") as f:
+            logs = f.read()
+    except FileNotFoundError:
+        return "No logs here"
+    
+    return logs
