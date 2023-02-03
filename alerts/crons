@@ -1,2 +1,0 @@
-10 * * * * root bash /app/updates.sh
-*/10 * * * * root bash /app/alerts.sh
