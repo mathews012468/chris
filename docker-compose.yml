@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  alerts:
+    build: ./alerts
+    volumes:
+      - logs:/app/logs
+  log-access:
+    build: ./log-access
+    volumes:
+      - logs:/app/logs
+    ports:
+      - "80:8000"
+volumes:
+  logs:
