@@ -8,7 +8,7 @@ from enum import Enum
 import logging
 
 BASEDIR = "/app"
-logging.basicConfig(filename=f'{BASEDIR}/logs/log', filemode='w', level=logging.ERROR, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(filename=f'{BASEDIR}/logs/log', level=logging.ERROR, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
