@@ -11,7 +11,7 @@ class Outcome(Enum):
     PRICE_EXCEEDS_MAX = 1
     GOOD_PRICE = 2
 
-BASEDIR = os.environ["BASEDIR"]
+BASEDIR = "/app"
 
 def price_to_int(display_price):
     """
