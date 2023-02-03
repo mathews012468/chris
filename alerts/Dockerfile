@@ -1,11 +1,17 @@
 FROM python:3
 
-WORKDIR /app
+RUN apt-get update && apt-get -y install cron chromium chromium-driver
 
-COPY requirements.txt ./
+WORKDIR /app
+COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+RUN (crontab -l -u root; echo '10 * * * * bash /app/updates.sh \
+*/10 * * * * bash /app/alerts.sh') | crontab
 
-#set up the alerts
-RUN 
+RUN chmod 0744 updates.sh
+RUN chmod 0744 alerts.sh
+
+RUN touch /var/log/cron.log
+
+CMD cron && tail -f /var/log/cron.log

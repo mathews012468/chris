@@ -22,15 +22,20 @@ def price_to_int(display_price):
 
 def check_available_cruises(max_price):
     start_date = "2023-02-11"
-    end_date = "2023-02-13"
+    end_date = "2023-02-14"
 
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-div-shm-usage')
+    options.add_argument('user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"')
+    driver = webdriver.Chrome('chromedriver', options=options)
     url = f"https://www.royalcaribbean.com/cruises?search=ship:WN|startDate:{start_date}~{end_date}"
     driver.get(url)
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
-    driver.quit()
     cruise_results = soup.find(id="cruise-results-wrapper")
+    driver.quit()
 
     if len(list(cruise_results.children)) == 0:
         return Outcome.NO_CRUISES, 0
