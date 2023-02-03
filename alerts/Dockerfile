@@ -6,8 +6,7 @@ WORKDIR /app
 COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN (crontab -l -u root; echo '10 * * * * bash /app/updates.sh \
-*/10 * * * * bash /app/alerts.sh') | crontab
+RUN (crontab -l -u root; echo '10 * * * * bash /app/updates.sh\n*/10 * * * * bash /app/alerts.sh\n') | crontab
 
 RUN chmod 0744 updates.sh
 RUN chmod 0744 alerts.sh
