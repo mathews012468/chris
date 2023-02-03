@@ -115,7 +115,7 @@ if __name__ == "__main__":
             if send == "true":
                 should_send = True
 
-    logger.info("start job: emails: %s, phones: %s, max: %s, should_send: %s", emails, phones, max, should_send)
+    logger.info("start job: emails: %s, phones: %s, max: %s, should_send: %s", emails, phones, max_price, should_send)
 
     outcome, price = check_available_cruises(max_price)
     if outcome == Outcome.GOOD_PRICE:
