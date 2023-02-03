@@ -5,13 +5,17 @@ import os
 import sys
 from twilio.rest import Client
 from enum import Enum
+import logging
+
+BASEDIR = "/app"
+logging.basicConfig(filename=f'{BASEDIR}/logs/log', filemode='w', level=logging.ERROR, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 class Outcome(Enum):
     NO_CRUISES = 0
     PRICE_EXCEEDS_MAX = 1
     GOOD_PRICE = 2
-
-BASEDIR = "/app"
 
 def price_to_int(display_price):
     """
@@ -95,11 +99,6 @@ def update_environment_variables_file(key, value):
             f.write(line)
 
 if __name__ == "__main__":
-    #recipient email, recipient phone number, max price
-    #email=
-    #phone=
-    #max=
-    #should_send=
     emails = []
     phones = []
     max_price = int(os.environ["MAX_PRICE"])
@@ -116,6 +115,8 @@ if __name__ == "__main__":
             if send == "true":
                 should_send = True
 
+    logger.info("start job: emails: %s, phones: %s, max: %s, should_send: %s", emails, phones, max, should_send)
+
     outcome, price = check_available_cruises(max_price)
     if outcome == Outcome.GOOD_PRICE:
         update_environment_variables_file("MAX_PRICE", price)
@@ -126,3 +127,5 @@ if __name__ == "__main__":
             send_text(phone, message)
     elif should_send:
         send_mail(recipient=os.environ["SENDER_EMAIL"], subject="Update", message=f"{outcome}, {price}")
+    
+    logger.info("%s, PRICE: %d", outcome, price)
