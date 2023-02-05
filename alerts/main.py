@@ -7,6 +7,7 @@ import sys
 from twilio.rest import Client
 from enum import Enum
 import logging
+from fake_useragent import UserAgent
 
 BASEDIR = "/app"
 logging.basicConfig(filename=f'{BASEDIR}/logs/log', level=logging.ERROR, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
@@ -27,7 +28,10 @@ def price_to_int(display_price):
     return int(price)
 
 def log_relevant_text(soup):
-    logger.info(soup.find(id="filters-wrapper").parent.text)
+    filterElement = soup.find(id="filters-wrapper")
+    if filterElement is None:
+        logger.info("Unfortunately nothing interesting on this page.")
+    logger.info(filterElement.parent.text)
 
 def check_available_cruises(max_price):
     start_date = "2023-02-11"
@@ -37,8 +41,8 @@ def check_available_cruises(max_price):
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-div-shm-usage')
-    #might need to vary user agents
-    options.add_argument('user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"')
+    ua = UserAgent()
+    options.add_argument(f'user-agent="{ua.random}"')
     driver = webdriver.Chrome('chromedriver', options=options)
     url = f"https://www.royalcaribbean.com/cruises?search=ship:WN|startDate:{start_date}~{end_date}"
     
