@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from bs4 import BeautifulSoup
 import yagmail
 import os
@@ -16,6 +17,7 @@ class Outcome(Enum):
     NO_CRUISES = 0
     PRICE_EXCEEDS_MAX = 1
     GOOD_PRICE = 2
+    DIDNT_WORK = 3
 
 def price_to_int(display_price):
     """
@@ -39,14 +41,28 @@ def check_available_cruises(max_price):
     options.add_argument('user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"')
     driver = webdriver.Chrome('chromedriver', options=options)
     url = f"https://www.royalcaribbean.com/cruises?search=ship:WN|startDate:{start_date}~{end_date}"
-    driver.get(url)
+    
+    MAX_RETRIES = 5
+    for i in range(MAX_RETRIES):
+        try:
+            driver.get(url)
+            break
+        except WebDriverException:
+            pass
+    if i >= MAX_RETRIES - 1:
+        return Outcome.DIDNT_WORK, 0
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
     cruise_results = soup.find(id="cruise-results-wrapper")
     log_relevant_text(soup)
     driver.quit()
 
-    if len(list(cruise_results.children)) == 0:
+    try:
+        cruises = cruise_results.children
+    except AttributeError:
+        return Outcome.NO_CRUISES, 0
+
+    if len(list(cruises)) == 0:
         return Outcome.NO_CRUISES, 0
     
     display_price = cruise_results.find("h2", class_="label-price")
