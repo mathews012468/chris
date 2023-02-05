@@ -24,6 +24,9 @@ def price_to_int(display_price):
     price = display_price.replace("$", "").replace(",", "")
     return int(price)
 
+def log_relevant_text(soup):
+    logger.info(soup.find(id="filters-wrapper").parent.text)
+
 def check_available_cruises(max_price):
     start_date = "2023-02-11"
     end_date = "2023-02-14"
@@ -40,6 +43,7 @@ def check_available_cruises(max_price):
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
     cruise_results = soup.find(id="cruise-results-wrapper")
+    log_relevant_text(soup)
     driver.quit()
 
     if len(list(cruise_results.children)) == 0:
