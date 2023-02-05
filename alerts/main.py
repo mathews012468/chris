@@ -31,6 +31,7 @@ def log_relevant_text(soup):
     filterElement = soup.find(id="filters-wrapper")
     if filterElement is None:
         logger.info("Unfortunately nothing interesting on this page.")
+        return
     logger.info(filterElement.parent.text)
 
 def check_available_cruises(max_price):
