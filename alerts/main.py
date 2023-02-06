@@ -43,6 +43,7 @@ def check_available_cruises(max_price):
     ua = UserAgent()
     options.add_argument(f'user-agent="{ua.random}"')
     driver = webdriver.Chrome('chromedriver', options=options)
+    driver.maximize_window()
     url = f"https://www.royalcaribbean.com/cruises?search=ship:WN|startDate:{start_date}~{end_date}"
     
     MAX_RETRIES = 5
