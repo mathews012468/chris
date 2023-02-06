@@ -10,8 +10,9 @@ def hello():
 def get_logs():
     try:
         with open("/app/logs/log") as f:
-            logs = f.read()
+            logs = [f"<p>{log}</p>" for log in f]
     except FileNotFoundError:
         return "No logs here"
     
+    logs = "".join(logs)
     return logs
