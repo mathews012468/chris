@@ -19,6 +19,7 @@ class Outcome(Enum):
     PRICE_EXCEEDS_MAX = 1
     GOOD_PRICE = 2
     DIDNT_WORK = 3
+    DENIED_ACCESS = 4
 
 def price_to_int(display_price):
     """
@@ -65,7 +66,7 @@ def check_available_cruises(max_price):
     try:
         cruises = cruise_results.children
     except AttributeError:
-        return Outcome.NO_CRUISES, 0
+        return Outcome.DENIED_ACCESS, 0
 
     if len(list(cruises)) == 0:
         return Outcome.NO_CRUISES, 0
