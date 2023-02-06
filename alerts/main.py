@@ -29,11 +29,8 @@ def price_to_int(display_price):
     return int(price)
 
 def log_relevant_text(soup):
-    filterElement = soup.find(id="filters-wrapper")
-    if filterElement is None:
-        logger.info("Unfortunately nothing interesting on this page.")
-        return
-    logger.info(filterElement.parent.text)
+    logger.info(soup.body.text)
+    return
 
 def check_available_cruises(max_price):
     start_date = "2023-02-11"
