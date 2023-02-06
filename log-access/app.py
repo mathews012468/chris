@@ -14,5 +14,7 @@ def get_logs():
     except FileNotFoundError:
         return "No logs here"
     
+    #see most recent history first
+    logs.reverse()
     logs = "".join(logs)
     return logs
