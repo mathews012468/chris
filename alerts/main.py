@@ -45,7 +45,7 @@ def check_available_cruises(max_price):
     driver = webdriver.Chrome('chromedriver', options=options)
     driver.maximize_window()
     url = f"https://www.royalcaribbean.com/cruises?search=ship:WN|startDate:{start_date}~{end_date}"
-    
+
     MAX_RETRIES = 5
     for i in range(MAX_RETRIES):
         try:
@@ -75,7 +75,7 @@ def check_available_cruises(max_price):
 
     display_price = display_price.text
     price = price_to_int(display_price)
-    if price > max_price:
+    if price >= max_price:
         return Outcome.PRICE_EXCEEDS_MAX, price
     else:
         return Outcome.GOOD_PRICE, price
