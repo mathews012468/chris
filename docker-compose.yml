@@ -2,6 +2,9 @@ version: "3.3"
 services:
   alerts:
     build: ./alerts
+    #Sheds some light on volumes. Keep in mind, a volume is just a folder!!!!
+    #https://docs.docker.com/storage/volumes/#use-a-volume-with-docker-compose
+    #More helpful reading: https://docs.docker.com/get-started/05_persisting_data/
     volumes:
       - logs:/app/logs
   log-access:

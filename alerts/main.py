@@ -10,6 +10,10 @@ import logging
 from fake_useragent import UserAgent
 
 BASEDIR = "/app"
+#How to make log messages from other libraries not appear: https://stackoverflow.com/a/8269542
+#the idea is to set the logging level for other libraries higher than for my code
+#another answer on that post says that's not ideal, since it doesn't really stop
+#the other libraries from logging, but it's good enough for me.
 logging.basicConfig(filename=f'{BASEDIR}/logs/log', level=logging.ERROR, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
